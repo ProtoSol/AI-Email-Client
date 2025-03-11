@@ -1,0 +1,17 @@
+<!-- app/templates/view_email.html -->
+{% extends 'layout.html' %}
+
+{% block title %}View Email - AI Email Client{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">{{ email.subject }}</h2>
+    <p><strong>From:</strong> {{ email.sender }}</p>
+    <p><strong>Date:</strong> {{ email.date.strftime('%d %b %Y, %H:%M') }}</p>
+    <hr>
+    <p>{{ email.body }}</p>
+    <form action="{{ url_for('delete_email', email_id=email.id) }}" method="POST" class="mt-4">
+        <button type="submit" class="btn btn-outline-danger">Delete</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Sent Emails</h1>
+    <ul>
+    {% for email in emails %}
+        <li>
+            <strong>To:</strong> {{ email.recipient }}<br>
+            <strong>Subject:</strong> {{ email.subject }}<br>
+            <strong>Body:</strong> {{ email.body }}<br>
+            <strong>Sent At:</strong> {{ email.date_sent }}
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock content %}

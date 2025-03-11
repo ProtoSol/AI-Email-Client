@@ -1,0 +1,52 @@
+<!-- app/templates/inbox.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Inbox - AI Email Client{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Inbox</h2>
+        <a href="{{ url_for('compose') }}" class="btn btn-primary">Compose</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">From</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for email in emails %}
+                <tr>
+                    <td>{{ email.sender }}</td>
+                    <td>
+                        <a href="{{ url_for('view_email', email_id=email.id) }}" class="text-decoration-none fw-bold">
+                            {{ email.subject }}
+                        </a>
+                    </td>
+                    <td>{{ email.date.strftime('%d %b %Y, %H:%M') }}</td>
+                    <td>
+                        <a href="{{ url_for('view_email', email_id=email.id) }}" class="btn btn-outline-primary btn-sm">
+                            View
+                        </a>
+                        <a href="{{ url_for('delete_email', email_id=email.id) }}"
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="return confirm('Are you sure you want to delete this email?');">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted">No emails found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

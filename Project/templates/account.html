@@ -1,0 +1,33 @@
+<!-- filepath: c:\Users\PS144\Desktop\Final Project\Project\templates\account.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Account - AI Email Client{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Account</h2>
+    <div class="media d-flex align-items-center">
+        <img class="rounded-circle account-img" src="{{ image_file }}" style="width: 100px; height: 100px; margin-right: 20px;">
+        <div class="media-body">
+            <h2 class="account-heading">{{ current_user.username }}</h2>
+            <p class="text-secondary">{{ current_user.email }}</p>
+        </div>
+    </div>
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ form.picture.label(class="form-label") }}
+            {{ form.picture(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+{% endblock %}

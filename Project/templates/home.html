@@ -1,0 +1,63 @@
+<!-- app/templates/home.html -->
+{% extends 'layout.html' %}
+
+{% block title %}Home - AI Email Client{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">Welcome to AI Email Client</h1>
+    <p class="lead">
+        Manage your emails efficiently with AI-powered suggestions and automation.
+    </p>
+    <hr class="my-4">
+    {% if current_user.is_authenticated %}
+        <a class="btn btn-primary btn-lg mr-2" href="{{ url_for('inbox') }}" role="button">
+            Go to Inbox
+        </a>
+        <a class="btn btn-success btn-lg" href="{{ url_for('compose') }}" role="button">
+            Compose Email
+        </a>
+    {% else %}
+        <a class="btn btn-primary btn-lg mr-2" href="{{ url_for('login') }}" role="button">
+            Login
+        </a>
+        <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('register') }}" role="button">
+            Register
+        </a>
+    {% endif %}
+</div>
+
+<!-- Features Section -->
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">AI Suggestions</h5>
+                <p class="card-text">
+                    Get AI-powered suggestions while composing and organizing your emails.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Smart Inbox</h5>
+                <p class="card-text">
+                    Automatically categorize and prioritize important emails.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Seamless Integration</h5>
+                <p class="card-text">
+                    Connect your email accounts and manage them all in one place.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
