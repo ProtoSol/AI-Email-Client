@@ -5,7 +5,36 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="mb-4">About</h2>
-    <p>This is an AI Email Client application.</p>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">About AI Email Client</h2>
+        </div>
+        <div class="card-body">
+            <p>Welcome to the AI Email Client project! This project is designed to provide a feature-rich email client with AI-powered summarization capabilities.</p>
+            <h4>Features</h4>
+            <ul>
+                <li>User Registration and Login</li>
+                <li>Profile Management</li>
+                <li>Compose, Send, and Receive Emails</li>
+                <li>Inbox and Sent Emails Management</li>
+                <li>AI-Powered Email Summarization using the Transformer Library</li>
+                <li>Password Reset Functionality</li>
+            </ul>
+            <h4>Technologies Used</h4>
+            <ul>
+                <li>Flask - Web Framework</li>
+                <li>Flask-SQLAlchemy - Database ORM</li>
+                <li>Flask-Bcrypt - Password Hashing</li>
+                <li>Flask-Login - User Session Management</li>
+                <li>Flask-Mail - Email Sending</li>
+                <li>Flask-Migrate - Database Migrations</li>
+                <li>Transformers - AI Summarization</li>
+                <li>Bootstrap - Frontend Framework</li>
+            </ul>
+            <h4>How to Use</h4>
+            <p>To get started, register for an account or log in if you already have one. Once logged in, you can compose new emails, view your inbox, and manage your sent emails. Use the "Summarize" button to get a quick summary of any email.</p>
+            <p><strong>Note:</strong> Passwords must be at least 8 characters long and contain a mix of letters and numbers.</p>
+        </div>
+    </div>
 </div>
 {% endblock %}

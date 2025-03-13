@@ -1,6 +1,6 @@
 # app/routes.py
-from flask import render_template, url_for, flash, redirect, request, abort
-from Project import db, bcrypt, app
+from flask import render_template, url_for, flash, redirect, request, abort, jsonify
+from Project import db, bcrypt, app, summarizer
 from Project.models import User, Email
 from Project.forms import RegistrationForm, LoginForm, UpdateAccountForm, ComposeEmailForm, RequestResetForm, ResetPasswordForm
 from flask_login import login_user, current_user, logout_user, login_required
@@ -29,6 +29,17 @@ def save_picture(form_picture, old_picture):
     i.thumbnail(output_size)
     i.save(picture_path)  # Save the uploaded file
     return picture_fn
+
+@app.route('/summarize', methods=['POST'])
+def summarize():
+    data = request.get_json()
+    title = data.get('title', '')
+    body = data.get('body', '')
+    input_text = title + ' ' + body
+    input_length = len(input_text.split())
+    max_length = min(130, input_length // 2)  # Adjust max_length based on input length
+    summary = summarizer(input_text, max_length=max_length, min_length=30, do_sample=False)
+    return jsonify(summary=summary[0]['summary_text'])
 
 @app.route('/')
 @app.route('/home')
@@ -147,7 +158,7 @@ def sent():
 @login_required
 def view_email(email_id):
     email = Email.query.get_or_404(email_id)
-    if email.sender_id != current_user.id:
+    if email.sender_id != current_user.id and email.recipient != current_user.email:
         abort(403)
     return render_template('view_email.html', email=email)
 

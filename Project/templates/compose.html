@@ -5,25 +5,31 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="mb-4">Compose Email</h2>
-    <form method="POST" action="{{ url_for('compose') }}">
-        {{ form.hidden_tag() }}
-        <div class="mb-3">
-            {{ form.recipient.label(class="form-label") }}
-            {{ form.recipient(class="form-control", placeholder="Recipient", required="required") }}
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Compose Email</h2>
         </div>
-        <div class="mb-3">
-            {{ form.subject.label(class="form-label") }}
-            {{ form.subject(class="form-control", placeholder="Subject", required="required") }}
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('compose') }}">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ form.recipient.label(class="form-label") }}
+                    {{ form.recipient(class="form-control", placeholder="Recipient", required="required") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.subject.label(class="form-label") }}
+                    {{ form.subject(class="form-control", placeholder="Subject", required="required") }}
+                </div>
+                <div class="mb-3">
+                    {{ form.body.label(class="form-label") }}
+                    {{ form.body(class="form-control", rows=6, placeholder="Write your message...", required="required") }}
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ url_for('inbox') }}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-            {{ form.body.label(class="form-label") }}
-            {{ form.body(class="form-control", rows=6, placeholder="Write your message...", required="required") }}
-        </div>
-        <div class="d-flex justify-content-between mt-4">
-            <a href="{{ url_for('inbox') }}" class="btn btn-outline-secondary">Cancel</a>
-            <button type="submit" class="btn btn-primary">Send</button>
-        </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

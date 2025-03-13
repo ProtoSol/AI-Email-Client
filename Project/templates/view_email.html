@@ -5,13 +5,58 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="mb-4">{{ email.subject }}</h2>
-    <p><strong>From:</strong> {{ email.sender }}</p>
-    <p><strong>Date:</strong> {{ email.date.strftime('%d %b %Y, %H:%M') }}</p>
-    <hr>
-    <p>{{ email.body }}</p>
-    <form action="{{ url_for('delete_email', email_id=email.id) }}" method="POST" class="mt-4">
-        <button type="submit" class="btn btn-outline-danger">Delete</button>
-    </form>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">{{ email.subject }}</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>From:</strong> {{ email.sender }}</p>
+            <p><strong>Date:</strong> {{ email.date.strftime('%d %b %Y, %H:%M') }}</p>
+            <hr>
+            <p>{{ email.body }}</p>
+            <form action="{{ url_for('delete_email', email_id=email.id) }}" method="POST" class="mt-4">
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
+            </form>
+            <button id="summarize-btn" class="btn btn-outline-primary mt-4">Summarize</button>
+            <div id="loading" class="mt-4" style="display: none;">Summarizing... Please wait.</div>
+            <div id="summary" class="mt-4"></div>
+        </div>
+    </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("summarize-btn").addEventListener("click", function() {
+        var summarizeBtn = document.getElementById("summarize-btn");
+        var loadingIndicator = document.getElementById("loading");
+        var summaryDiv = document.getElementById("summary");
+
+        summarizeBtn.disabled = true;
+        loadingIndicator.style.display = "block";
+        summaryDiv.innerText = "";
+
+        fetch("{{ url_for('summarize') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: "{{ email.subject }}",
+                body: `{{ email.body|replace('\n', '\\n') }}`
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadingIndicator.style.display = "none";
+            summarizeBtn.disabled = false;
+            summaryDiv.innerText = data.summary;
+        })
+        .catch(error => {
+            loadingIndicator.style.display = "none";
+            summarizeBtn.disabled = false;
+            summaryDiv.innerText = "An error occurred while summarizing.";
+        });
+    });
+});
+</script>
 {% endblock %}
