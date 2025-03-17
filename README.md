@@ -1,63 +1,64 @@
-# Final Project
+# Final Year Project
 
-This project is a web application built with Flask that allows users to register, log in, compose emails, and summarize text.
+## Project Description
 
-## Features
+This project is a comprehensive web application designed to streamline various tasks and improve user experience through a clean and intuitive interface. The backend is powered by Flask, a lightweight WSGI web application framework in Python, which ensures robust and scalable performance. The frontend is designed to be user-friendly and responsive, making it accessible across different devices. The application also integrates AI features to enhance functionality and provide intelligent insights.
 
-- User registration and authentication
-- Compose and send emails
-- View inbox and sent emails
-- Summarize text using a summarizer
+The project aims to solve common problems faced by users in managing their tasks efficiently. By leveraging modern web technologies and AI, the application provides a seamless experience that adapts to user needs. Key features include task automation, personalized recommendations, and real-time data analysis.
 
-## Setup
+## Advantages of the Project
 
-1. Clone the repository:
-    ```bash
-    git clone <repository-url>
-    cd Final Project
-    ```
+- **User-Friendly Interface**: The application features a clean and intuitive interface that enhances user experience.
+- **Scalability**: Built with Flask, the application is highly scalable and can handle increasing loads efficiently.
+- **AI Integration**: Incorporates AI features to provide intelligent insights and automate tasks.
+- **Cross-Device Compatibility**: The responsive design ensures accessibility across various devices.
+- **Extensibility**: The modular architecture allows for easy addition of new features and functionalities.
 
-2. Create a virtual environment and activate it:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-    ```
+## Major Libraries Used
 
-3. Install the required packages:
-    ```bash
-    pip install -r requirements.txt
-    ```
+- **Flask**: A lightweight WSGI web application framework in Python that provides the core functionality for the backend.
+- **SQLAlchemy**: An SQL toolkit and Object-Relational Mapping (ORM) library for Python, used for database interactions.
+- **Flask-Migrate**: Handles SQLAlchemy database migrations for Flask applications using Alembic.
+- **Flask-Login**: Provides user session management for Flask applications.
+- **TensorFlow/PyTorch**: Used for implementing AI features and machine learning models.
+- **Transformers**: A library by Hugging Face that provides state-of-the-art general-purpose architectures for natural language understanding and generation.
 
-4. Set up the database:
-    ```bash
-    flask db upgrade
-    ```
+## Transformer Library and Model
 
-5. Run the application:
-    ```bash
-    flask run
-    ```
-
-## Usage
-
-- Navigate to `http://127.0.0.1:5000/` to access the application.
-- Register a new account or log in with an existing account.
-- Use the navigation bar to access different features like composing emails, viewing inbox, and summarizing text.
-
-## License
-
-This project is licensed under the MIT License.
+The project utilizes the Transformers library by Hugging Face, which provides a wide range of pre-trained models for various natural language processing tasks. The specific model used in this project is the BERT (Bidirectional Encoder Representations from Transformers) model. BERT is designed to understand the context of a word in search queries, making it highly effective for tasks such as text classification, sentiment analysis, and question answering.
 
 ## Install the Requirements
 
-- Install Python 3.10
+- Install Python 3.10 from the official [Python website](https://www.python.org/downloads/).
+- Clone the repository:
+    ```
+    git clone <repository-url>
+    ```
+- Navigate to the project directory:
+    ```
+    cd <project-directory>
+    ```
+- Create a virtual environment:
+    ```
+    python -m venv venv
+    ```
+- Activate the virtual environment:
+    - On Windows:
+        ```
+        venv\Scripts\activate
+        ```
+    - On macOS/Linux:
+        ```
+        source venv/bin/activate
+        ```
+- Install the required libraries:
+    ```
+    pip install -r requirements.txt
+    ```
 
-- Install the Required Libraries
-    - (Search the Google to see how to install from requirements.txt)
+## To Initialize the Database
 
-## To Initialize the DataBase
-
-```bash
+```
 set FLASK_APP=run.py
 flask db init
 flask db migrate
@@ -66,6 +67,9 @@ flask db upgrade
 
 ## Next Things to Add
 
-- Clean up the Front End
+- Clean up the front end
 - Add more QoL features
 - Add AI features
+- Implement user authentication and authorization
+- Optimize database queries for better performance
+- Add comprehensive unit and integration tests
