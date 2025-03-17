@@ -44,7 +44,9 @@ def summarize():
 @app.route('/')
 @app.route('/home')
 def home():
-    return redirect(url_for('inbox'))
+    if current_user.is_authenticated:
+        return redirect(url_for('inbox'))
+    return render_template('home.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

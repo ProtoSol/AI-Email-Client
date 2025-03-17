@@ -27,6 +27,33 @@ The project aims to solve common problems faced by users in managing their tasks
 
 The project utilizes the Transformers library by Hugging Face, which provides a wide range of pre-trained models for various natural language processing tasks. The specific model used in this project is the BERT (Bidirectional Encoder Representations from Transformers) model. BERT is designed to understand the context of a word in search queries, making it highly effective for tasks such as text classification, sentiment analysis, and question answering.
 
+## Tech Stack Used
+
+The project utilizes a modern tech stack to ensure high performance, scalability, and maintainability. The key components of the tech stack include:
+
+- **Frontend**:
+  - **HTML/CSS**: For structuring and styling the web pages.
+  - **JavaScript**: For adding interactivity to the web pages.
+  - **React**: A JavaScript library for building user interfaces, ensuring a responsive and dynamic frontend.
+
+- **Backend**:
+  - **Python**: The primary programming language used for backend development.
+  - **Flask**: A lightweight WSGI web application framework for building the backend services.
+  - **SQLAlchemy**: An ORM library for database interactions.
+  - **Flask-Migrate**: For handling database migrations.
+  - **Flask-Login**: For managing user sessions and authentication.
+
+- **Database**:
+  - **SQLite**: A lightweight, disk-based database used for storing and managing data.
+
+- **AI/ML**:
+  - **TensorFlow/PyTorch**: Libraries used for implementing AI features and machine learning models.
+  - **Transformers**: A library by Hugging Face for natural language processing tasks.
+
+- **Version Control**:
+  - **Git**: For version control and collaboration.
+  - **GitHub**: For hosting the repository and managing project collaboration.
+
 ## Install the Requirements
 
 - Install Python 3.10 from the official [Python website](https://www.python.org/downloads/).
@@ -67,6 +94,7 @@ flask db upgrade
 
 ## Next Things to Add
 
+- Migerate to PostreSQL
 - Clean up the front end
 - Add more QoL features
 - Add AI features
