@@ -8,6 +8,7 @@ from PIL import Image
 import os
 import secrets
 
+# LOGIC FOR SAVING PROFILE PICTURE
 def save_picture(form_picture, old_picture):
     # Delete the old profile picture if it exists and is not the default image
     if old_picture != 'default.png':
@@ -41,6 +42,7 @@ def summarize():
     summary = summarizer(input_text, max_length=max_length, min_length=30, do_sample=False)
     return jsonify(summary=summary[0]['summary_text'])
 
+# Home
 @app.route('/')
 @app.route('/home')
 def home():
@@ -48,6 +50,7 @@ def home():
         return redirect(url_for('inbox'))
     return render_template('home.html')
 
+# Register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -56,12 +59,14 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        # Transaction
         db.session.add(user)
         db.session.commit()
         flash('Account created successfully!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
+# Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -77,6 +82,7 @@ def login():
             flash('Login failed. Check email and password.', 'danger')
     return render_template('login.html', form=form)
 
+# Account
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
@@ -96,6 +102,7 @@ def account():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account', image_file=image_file, form=form)
 
+# Logout
 @app.route('/logout')
 def logout():
     logout_user()
@@ -144,17 +151,20 @@ def reset_password(token):
         return redirect(url_for('login'))
     return render_template('reset_password.html', title='Reset Password', form=form)
 
+# Inbox
 @app.route("/inbox")
 @login_required
 def inbox():
     emails = Email.query.filter_by(recipient=current_user.email).all()
     return render_template('inbox.html', emails=emails)
 
+# Sent
 @app.route("/sent")
 @login_required
 def sent():
     sent_emails = Email.query.filter_by(sender_id=current_user.id).all()
     return render_template('sent.html', sent_emails=sent_emails)
+
 
 @app.route("/email/<int:email_id>")
 @login_required
@@ -164,17 +174,20 @@ def view_email(email_id):
         abort(403)
     return render_template('view_email.html', email=email)
 
+# Delete
 @app.route("/email/<int:email_id>/delete", methods=['POST'])
 @login_required
 def delete_email(email_id):
     email = Email.query.get_or_404(email_id)
-    if email.sender_id != current_user.id:
+    # Ensure the current user is either the sender or the recipient
+    if email.sender_id != current_user.id and email.recipient != current_user.email:
         abort(403)
     db.session.delete(email)
     db.session.commit()
     flash('Email has been deleted!', 'success')
     return redirect(url_for('inbox'))
 
+# Compose
 @app.route('/compose', methods=['GET', 'POST'])
 @login_required
 def compose():
@@ -195,12 +208,14 @@ def compose():
             return redirect(url_for('compose'))
     return render_template('compose.html', form=form)
 
+# About
 @app.route('/about')
 def about():
     return render_template('about.html', title='About')
 
-@app.route("/sent_emails")
-@login_required
-def sent_emails():
-    emails = Email.query.filter_by(sender=current_user).all()
-    return render_template('sent_emails.html', emails=emails)
+# # Sent Emails
+# @app.route("/sent_emails")
+# @login_required
+# def sent_emails():
+#     emails = Email.query.filter_by(sender=current_user).all()
+#     return render_template('sent_emails.html', emails=emails)
