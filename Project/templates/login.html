@@ -1,36 +1,117 @@
-<!-- app/templates/login.html -->
 {% extends 'layout.html' %}
 
-{% block title %}Login - AI Email Client{% endblock %}
-
 {% block content %}
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h2 class="mb-0">Login</h2>
-        </div>
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    body {
+        background: linear-gradient(135deg,#667eea, #764ba2, #6a11cb, #2575fc,#ff758c, #ff7eb3, #fad0c4, #ffdde1);
+        background-size: 400% 400%;
+        animation: gradientBG 20s infinite alternate ease-in-out;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Poppins', sans-serif;
+        position: relative;
+    }
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+        /* 0% { background: linear-gradient(135deg, #ff758c, #ff7eb3, #fad0c4, #ffdde1); }
+        25% { background: linear-gradient(135deg, #667eea, #764ba2, #6a11cb, #2575fc); }
+        50% { background: linear-gradient(135deg, #ff9a9e, #ffdde1, #ff7eb3, #ff758c); }
+        75% { background: linear-gradient(135deg, #a1c4fd, #c2e9fb, #89f7fe, #66a6ff); }
+        100% { background: linear-gradient(135deg, #ff758c, #ff7eb3, #fad0c4, #ffdde1); } */
+    }
+    .navbar {
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s, box-shadow 0.3s;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 25px;
+        backdrop-filter: blur(12px);
+        z-index: 10;
+        animation: fadeInUp 2s ease-in-out;
+    }
+    .card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        border: none;
+        transition: all 0.3s;
+        font-weight: bold;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #ff7eb3, #ff758c);
+        transform: scale(1.05);
+    }
+    .text-muted:hover {
+        text-decoration: underline;
+    }
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
+    }
+    .form-control:focus {
+        box-shadow: 0 0 10px rgba(255, 118, 136, 0.5);
+        border-color: #ff758c;
+    }
+    footer {
+        background: transparent !important;
+    }
+</style>
+
+
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="card shadow-lg" style="width: 100%; max-width: 400px;">
         <div class="card-body">
+            <h2 class="card-title text-center mb-3 text-dark fw-bold">Welcome Back!</h2>
+            <p class="text-center text-muted">Sign in to continue and access your emails</p>
             <form method="POST" action="">
                 {{ form.hidden_tag() }}
-                <div class="form-group">
-                    {{ form.email.label(class="form-label") }}
+
+                <div class="form-group mb-3">
+                    {{ form.email.label(class="form-label fw-bold") }}
                     {{ form.email(class="form-control", placeholder="Enter your email") }}
                     {% if form.email.errors %}
-                        <small class="text-danger">
-                            {{ form.email.errors[0] }}
-                        </small>
+                        <small class="text-danger">{{ form.email.errors[0] }}</small>
                     {% endif %}
                 </div>
-                <div class="form-group">
-                    {{ form.password.label(class="form-label") }}
+
+                <div class="form-group mb-3">
+                    {{ form.password.label(class="form-label fw-bold") }}
                     {{ form.password(class="form-control", placeholder="Enter your password") }}
                     {% if form.password.errors %}
-                        <small class="text-danger">
-                            {{ form.password.errors[0] }}
-                        </small>
+                        <small class="text-danger">{{ form.password.errors[0] }}</small>
                     {% endif %}
                 </div>
-                <div class="form-group form-check">
+
+                <div class="form-group form-check mb-3">
                     {{ form.remember(class="form-check-input") }}
                     {{ form.remember.label(class="form-check-label") }}
                 </div>
@@ -42,7 +123,7 @@
             <div class="mt-3 text-center">
                 <small>
                     Don't have an account?
-                    <a href="{{ url_for('register') }}" class="text-primary">Register</a>
+                    <a href="{{ url_for('register') }}" class="text-primary fw-bold">Register</a>
                 </small>
             </div>
         </div>

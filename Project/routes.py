@@ -202,7 +202,7 @@ def compose():
             db.session.add(email)
             db.session.commit()
             flash('Your email has been sent!', 'success')
-            return redirect(url_for('inbox'))
+            return redirect(url_for('compose'))
         else:
             flash('The recipient email does not exist.', 'danger')
             return redirect(url_for('compose'))

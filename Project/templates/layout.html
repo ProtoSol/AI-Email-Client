@@ -15,7 +15,7 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
         <a class="navbar-brand" href="{{ url_for('home') }}">AI Email Client</a>
         <button
             class="navbar-toggler"
@@ -38,7 +38,7 @@
                         <a class="nav-link" href="{{ url_for('sent') }}">Sent</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('compose') }}">Compose</a>
+                        <a class="nav-link text" href="{{ url_for('compose') }}">Compose</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('account') }}">Account</a>
@@ -64,18 +64,6 @@
         </div>
     </nav>
 
-    <!-- Flash Messages -->
-    <div class="container mt-3">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
 
     <!-- Main Content -->
     <div class="container mt-4">
@@ -83,11 +71,9 @@
     </div>
 
     <!-- Footer -->
-    <div style="height: 60px;"></div> <!-- Spacer to accommodate the footer -->
-    <footer class="bg-dark text-white text-center py-3 mt-5 fixed-bottom">
+    <footer class="bg-transparent text-white text-center py-3 mt-5" style="position: absolute; bottom: 0; width: 100%;">
         <p>&copy; 2025 AI Email Client. All rights reserved.</p>
     </footer>
-
 
     <!-- Bootstrap JS -->
     <script

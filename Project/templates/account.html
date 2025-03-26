@@ -4,18 +4,44 @@
 {% block title %}Account - AI Email Client{% endblock %}
 
 {% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #aceef9, #f0ac01);
+        animation: fadeIn 1s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .card {
+        background: linear-gradient(135deg, #ffffff, #f1f3f5);
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        animation: slideUp 0.5s ease-in-out;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+</style>
+
 <div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
             <h2 class="mb-0">Account</h2>
         </div>
         <div class="card-body">
             <form method="POST" action="" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
-                <div class="form-group">
-                    <img src="{{ image_file }}" alt="Profile Picture" class="img-thumbnail mb-3">
-                    {{ form.picture.label(class="form-label") }}
-                    {{ form.picture(class="form-control-file") }}
+                <div class="form-group text-center">
+                    <img src="{{ image_file }}" alt="Profile Picture" class="img-thumbnail mb-3 rounded-circle" width="150">
+                    <div class="mt-2">
+                        {{ form.picture.label(class="form-label") }}
+                        {{ form.picture(class="form-control-file") }}
+                    </div>
                 </div>
                 <div class="form-group">
                     {{ form.username.label(class="form-label") }}
@@ -25,9 +51,12 @@
                     {{ form.email.label(class="form-label") }}
                     {{ form.email(class="form-control") }}
                 </div>
-                <button type="submit" class="btn btn-outline-primary">Update</button>
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i> Update</button>
+                </div>
             </form>
         </div>
+    </div>
     </div>
 </div>
 {% endblock %}
