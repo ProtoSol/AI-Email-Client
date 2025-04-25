@@ -7,6 +7,11 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
 from transformers import pipeline  # Import the transformer library
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Initialize the libraries
 
@@ -17,8 +22,8 @@ mail = Mail()
 migrate = Migrate()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'e08dd73152b14e7a0c2b7503412534ba'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
