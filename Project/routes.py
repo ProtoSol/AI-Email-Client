@@ -7,6 +7,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from PIL import Image
 import os
 import secrets
+from datetime import datetime, timedelta
 
 # LOGIC FOR SAVING PROFILE PICTURE
 def save_picture(form_picture, old_picture):
@@ -48,7 +49,7 @@ def summarize():
 def home():
     if current_user.is_authenticated:
         return redirect(url_for('inbox'))
-    return render_template('home.html')
+    return render_template('home.html', datetime=datetime, timedelta=timedelta, Email=Email)
 
 # Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -64,7 +65,7 @@ def register():
         db.session.commit()
         flash('Account created successfully!', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, datetime=datetime, timedelta=timedelta, Email=Email)
 
 # Login
 @app.route('/login', methods=['GET', 'POST'])
@@ -80,7 +81,7 @@ def login():
             return redirect(url_for('inbox'))
         else:
             flash('Login failed. Check email and password.', 'danger')
-    return render_template('login.html', form=form)
+    return render_template('login.html', form=form, datetime=datetime, timedelta=timedelta, Email=Email)
 
 # Account
 @app.route('/account', methods=['GET', 'POST'])
@@ -100,7 +101,7 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('account.html', title='Account', image_file=image_file, form=form)
+    return render_template('account.html', title='Account', image_file=image_file, form=form, datetime=datetime, timedelta=timedelta, Email=Email)
 
 # Logout
 @app.route('/logout')
@@ -120,7 +121,7 @@ def reset_request():
         else:
             flash('No account found with that email.', 'warning')
             return redirect(url_for('reset_request'))
-    return render_template('reset_request.html', title='Reset Password', form=form)
+    return render_template('reset_request.html', title='Reset Password', form=form, datetime=datetime, timedelta=timedelta, Email=Email)
 
 @app.route('/reset_password_form/<email>', methods=['GET', 'POST'])
 def reset_password_form(email):
@@ -133,7 +134,7 @@ def reset_password_form(email):
             db.session.commit()
             flash('Your password has been updated!', 'success')
             return redirect(url_for('login'))
-    return render_template('reset_password.html', title='Reset Password', form=form, email=email)
+    return render_template('reset_password.html', title='Reset Password', form=form, email=email, datetime=datetime, timedelta=timedelta, Email=Email)
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_password(token):
@@ -149,21 +150,21 @@ def reset_password(token):
         db.session.commit()
         flash('Your password has been reset.', 'success')
         return redirect(url_for('login'))
-    return render_template('reset_password.html', title='Reset Password', form=form)
+    return render_template('reset_password.html', title='Reset Password', form=form, datetime=datetime, timedelta=timedelta, Email=Email)
 
 # Inbox
 @app.route("/inbox")
 @login_required
 def inbox():
     emails = Email.query.filter_by(recipient=current_user.email).all()
-    return render_template('inbox.html', emails=emails)
+    return render_template('inbox.html', emails=emails, datetime=datetime, timedelta=timedelta, Email=Email)
 
 # Sent
 @app.route("/sent")
 @login_required
 def sent():
     sent_emails = Email.query.filter_by(sender_id=current_user.id).all()
-    return render_template('sent.html', sent_emails=sent_emails)
+    return render_template('sent.html', sent_emails=sent_emails, datetime=datetime, timedelta=timedelta, Email=Email)
 
 
 @app.route("/email/<int:email_id>")
@@ -172,7 +173,7 @@ def view_email(email_id):
     email = Email.query.get_or_404(email_id)
     if email.sender_id != current_user.id and email.recipient != current_user.email:
         abort(403)
-    return render_template('view_email.html', email=email)
+    return render_template('view_email.html', email=email, datetime=datetime, timedelta=timedelta, Email=Email)
 
 # Delete
 @app.route("/email/<int:email_id>/delete", methods=['POST'])
@@ -198,24 +199,32 @@ def compose():
         if user:
             subject = form.subject.data
             body = form.body.data
-            email = Email(sender=current_user.email, recipient=recipient, subject=subject, body=body, sender_id=current_user.id)
+            category = form.category.data
+            email = Email(sender=current_user.email, recipient=recipient, subject=subject, body=body, sender_id=current_user.id, category=category)
             db.session.add(email)
             db.session.commit()
             flash('Your email has been sent!', 'success')
+            # Create a new form instance to clear the fields
+            form = ComposeEmailForm()
             return redirect(url_for('compose'))
         else:
             flash('The recipient email does not exist.', 'danger')
             return redirect(url_for('compose'))
-    return render_template('compose.html', form=form)
+    return render_template('compose.html', form=form, datetime=datetime, timedelta=timedelta, Email=Email)
+
+@app.route("/inbox/<category>")
+@login_required
+def inbox_category(category):
+    emails = Email.query.filter_by(recipient=current_user.email, category=category).all()
+    return render_template('inbox.html', emails=emails, selected_category=category, datetime=datetime, timedelta=timedelta, Email=Email)
+
+@app.route("/sent/<category>")
+@login_required
+def sent_category(category):
+    sent_emails = Email.query.filter_by(sender_id=current_user.id, category=category).all()
+    return render_template('sent.html', sent_emails=sent_emails, selected_category=category, datetime=datetime, timedelta=timedelta, Email=Email)
 
 # About
 @app.route('/about')
 def about():
-    return render_template('about.html', title='About')
-
-# # Sent Emails
-# @app.route("/sent_emails")
-# @login_required
-# def sent_emails():
-#     emails = Email.query.filter_by(sender=current_user).all()
-#     return render_template('sent_emails.html', emails=emails)
+    return render_template('about.html', title='About', datetime=datetime, timedelta=timedelta, Email=Email)

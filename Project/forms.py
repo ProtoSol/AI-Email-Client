@@ -1,6 +1,6 @@
 # app/forms.py
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FileField, TextAreaField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, FileField, TextAreaField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from Project.models import User
 from flask_wtf.file import FileAllowed
@@ -51,6 +51,12 @@ class ComposeEmailForm(FlaskForm):
     recipient = StringField('Recipient', validators=[DataRequired(), Email()])
     subject = StringField('Subject', validators=[DataRequired()])
     body = TextAreaField('Body', validators=[DataRequired()])
+    category = SelectField('Category',
+                         choices=[('General', 'General'),
+                                ('Work', 'Work'),
+                                ('Personal', 'Personal'),
+                                ('Important', 'Important')],
+                         validators=[DataRequired()])
     submit = SubmitField('Send')
 
 class RequestResetForm(FlaskForm):

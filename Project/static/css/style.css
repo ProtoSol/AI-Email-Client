@@ -1,9 +1,12 @@
  .navbar {
-    background: rgba(255, 255, 255, 0.15); /* Transparent white */
-    backdrop-filter: blur(10px); /* Glass blur effect */
-    -webkit-backdrop-filter: blur(10px); /* Safari support */
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-}
-
+     background: rgba(255, 255, 255, 0.15);
+     /* Transparent white */
+     backdrop-filter: blur(10px);
+     /* Glass blur effect */
+     -webkit-backdrop-filter: blur(10px);
+     /* Safari support */
+     border-radius: 10px;
+     padding: 15px;
+     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+     /* Soft shadow for depth */
+ }

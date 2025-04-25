@@ -54,6 +54,7 @@ class Email(db.Model):
     body = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    category = db.Column(db.String(20), nullable=False, default='General')
 
     def __repr__(self):
-        return f"Email('{self.subject}', '{self.date}')"
+        return f"Email('{self.subject}', '{self.date}', '{self.category}')"

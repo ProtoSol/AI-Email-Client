@@ -9,10 +9,15 @@
         background: linear-gradient(135deg, #add2f7, #1b6bd4);
         animation: fadeIn 1s ease-in-out;
     }
-    
+
     @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 
     .card {
@@ -23,8 +28,15 @@
     }
 
     @keyframes slideUp {
-        from { transform: translateY(20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 </style>
 
@@ -35,22 +47,30 @@
             <a href="{{ url_for('inbox') }}" class="btn btn-light btn-sm">Inbox</a>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ url_for('compose') }}">
+            <form method="POST" action="{{ url_for('compose') }}" onsubmit="clearDrafts()">
                 {{ form.hidden_tag() }}
                 <div class="mb-3">
                     <label for="recipient" class="form-label"><i class="bi bi-person-fill"></i> Recipient</label>
-                    {{ form.recipient(class="form-control", id="recipient", placeholder="Enter recipient email", required="required") }}
+                    {{ form.recipient(class="form-control", id="recipient", placeholder="Enter recipient email",
+                    required="required") }}
                 </div>
                 <div class="mb-3">
                     <label for="subject" class="form-label"><i class="bi bi-pencil-fill"></i> Subject</label>
-                    {{ form.subject(class="form-control", id="subject", placeholder="Enter email subject", required="required") }}
+                    {{ form.subject(class="form-control", id="subject", placeholder="Enter email subject",
+                    required="required") }}
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label"><i class="bi bi-tag-fill"></i> Category</label>
+                    {{ form.category(class="form-control", id="category", required="required") }}
                 </div>
                 <div class="mb-3">
                     <label for="body" class="form-label"><i class="bi bi-chat-dots-fill"></i> Message</label>
-                    {{ form.body(class="form-control", id="body", rows=6, placeholder="Type your message...", required="required") }}
+                    {{ form.body(class="form-control", id="body", rows=6, placeholder="Type your message...",
+                    required="required") }}
                 </div>
                 <div class="d-flex justify-content-between mt-4">
-                    <a href="{{ url_for('inbox') }}" class="btn btn-outline-secondary"><i class="bi bi-x-circle"></i> Cancel</a>
+                    <a href="{{ url_for('inbox') }}" class="btn btn-outline-secondary"><i class="bi bi-x-circle"></i>
+                        Cancel</a>
                     <button type="submit" class="btn btn-success"><i class="bi bi-send-fill"></i> Send</button>
                 </div>
             </form>
@@ -60,7 +80,7 @@
 
 <!-- Auto-save Drafts -->
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const recipient = document.getElementById("recipient");
         const subject = document.getElementById("subject");
         const body = document.getElementById("body");
@@ -81,5 +101,11 @@
         subject.addEventListener("input", () => localStorage.setItem("draftSubject", subject.value));
         body.addEventListener("input", () => localStorage.setItem("draftBody", body.value));
     });
+
+    function clearDrafts() {
+        localStorage.removeItem("draftRecipient");
+        localStorage.removeItem("draftSubject");
+        localStorage.removeItem("draftBody");
+    }
 </script>
 {% endblock %}

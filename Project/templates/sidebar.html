@@ -1,0 +1,194 @@
+{% if current_user.is_authenticated %}
+<!-- Sidebar Component -->
+<div class="sidebar bg-light p-3 rounded shadow-sm">
+    <h5 class="mb-4">Email Statistics</h5>
+
+    <div class="stat-item mb-3">
+        <h6>Total Emails Sent</h6>
+        <p class="text-primary">{{ current_user.emails|length }}</p>
+    </div>
+
+    <div class="stat-item mb-3">
+        <h6>Last Email Sent</h6>
+        {% if current_user.emails %}
+        <p class="text-muted">{{ current_user.emails[-1].date.strftime('%Y-%m-%d %H:%M') }}</p>
+        <small class="text-muted">To: {{ current_user.emails[-1].recipient }}</small>
+        {% else %}
+        <p class="text-muted">No emails sent yet</p>
+        {% endif %}
+    </div>
+
+    <div class="stat-item mb-3">
+        <h6>Emails Sent Today</h6>
+        {% set today = namespace(count=0) %}
+        {% for email in current_user.emails %}
+        {% if email.date.date() == datetime.utcnow().date() %}
+        {% set today.count = today.count + 1 %}
+        {% endif %}
+        {% endfor %}
+        <p class="text-info">{{ today.count }}</p>
+    </div>
+
+    <div class="stat-item mb-3">
+        <h6>Emails Sent This Week</h6>
+        {% set week = namespace(count=0) %}
+        {% set week_start = datetime.utcnow().date() - timedelta(days=7) %}
+        {% for email in current_user.emails %}
+        {% if email.date.date() >= week_start %}
+        {% set week.count = week.count + 1 %}
+        {% endif %}
+        {% endfor %}
+        <p class="text-info">{{ week.count }}</p>
+    </div>
+
+    <div class="stat-item mb-3">
+        <h6>Email Categories</h6>
+        <div class="category-stats">
+            {% set categories = {} %}
+            {% for email in current_user.emails %}
+            {% if email.category not in categories %}
+            {% set _ = categories.update({email.category: 1}) %}
+            {% else %}
+            {% set _ = categories.update({email.category: categories[email.category] + 1}) %}
+            {% endif %}
+            {% endfor %}
+            {% for category, count in categories.items() %}
+            <div class="d-flex justify-content-between">
+                <span>{{ category }}</span>
+                <span class="badge badge-primary">{{ count }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="stat-item mb-3">
+        <h6>Top Recipients</h6>
+        <div class="recipient-stats">
+            {% set recipients = {} %}
+            {% for email in current_user.emails %}
+            {% if email.recipient not in recipients %}
+            {% set _ = recipients.update({email.recipient: 1}) %}
+            {% else %}
+            {% set _ = recipients.update({email.recipient: recipients[email.recipient] + 1}) %}
+            {% endif %}
+            {% endfor %}
+            {% for recipient, count in recipients.items()|sort(attribute='1', reverse=true) %}
+            {% if loop.index <= 5 %} <div class="d-flex justify-content-between">
+                <span>{{ recipient }}</span>
+                <span class="badge badge-info">{{ count }}</span>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="stat-item mb-3">
+        <h6>Average Emails Per Day</h6>
+        {% if current_user.emails %}
+        {% set first_email = current_user.emails|sort(attribute='date')|first %}
+        {% set days_since_first = (datetime.utcnow() - first_email.date).days %}
+        {% if days_since_first > 0 %}
+        <p class="text-success">{{ (current_user.emails|length / days_since_first)|round(1) }}</p>
+        {% else %}
+        <p class="text-success">{{ current_user.emails|length }}</p>
+        {% endif %}
+        {% else %}
+        <p class="text-muted">No emails sent yet</p>
+        {% endif %}
+    </div>
+
+    <div class="stat-item">
+        <h6>Recent Received Emails</h6>
+        <div class="recent-emails">
+            {% set received_emails =
+            Email.query.filter_by(recipient=current_user.email).order_by(Email.date.desc()).limit(3).all() %}
+            {% if received_emails %}
+            {% for email in received_emails %}
+            <div class="recent-email-item mb-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">{{ email.date.strftime('%Y-%m-%d %H:%M') }}</small>
+                    <span class="badge badge-secondary">{{ email.category }}</span>
+                </div>
+                <div class="email-sender">
+                    <strong>From:</strong> {{ email.sender }}
+                </div>
+                <div class="email-subject">
+                    <strong>Subject:</strong> {{ email.subject }}
+                </div>
+                <div class="email-preview text-muted">
+                    {{ email.body[:100] }}{% if email.body|length > 100 %}...{% endif %}
+                </div>
+                <a href="{{ url_for('view_email', email_id=email.id) }}"
+                    class="btn btn-sm btn-outline-primary mt-2">View</a>
+            </div>
+            {% if not loop.last %}
+            <hr class="my-2">
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <p class="text-muted">No received emails</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .sidebar {
+        position: fixed;
+        right: 20px;
+        top: 80px;
+        width: 250px;
+        z-index: 1000;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+    }
+
+    .stat-item {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+
+    .stat-item:last-child {
+        border-bottom: none;
+    }
+
+    .category-stats,
+    .recipient-stats,
+    .recent-emails {
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    .badge {
+        font-size: 0.8em;
+    }
+
+    .recent-email-item {
+        padding: 8px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
+
+    .email-preview {
+        font-size: 0.85em;
+        margin-top: 5px;
+    }
+
+    /* Custom scrollbar for the sidebar */
+    .sidebar::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 5px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+</style>
+{% endif %}
