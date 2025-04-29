@@ -1,103 +1,133 @@
-# Final Year Project
+# AI Email Client
 
 ## Project Description
 
-This project is a comprehensive web application designed to streamline various tasks and improve user experience through a clean and intuitive interface. The backend is powered by Flask, a lightweight WSGI web application framework in Python, which ensures robust and scalable performance. The frontend is designed to be user-friendly and responsive, making it accessible across different devices. The application also integrates AI features to enhance functionality and provide intelligent insights.
+AI Email Client is a modern web application that combines traditional email functionality with artificial intelligence to enhance email management and productivity. Built with Flask and powered by state-of-the-art AI models, this application provides an intuitive interface for managing emails while offering smart features like email summarization and categorization.
 
-The project aims to solve common problems faced by users in managing their tasks efficiently. By leveraging modern web technologies and AI, the application provides a seamless experience that adapts to user needs. Key features include task automation, personalized recommendations, and real-time data analysis.
+## Key Features
 
-## Advantages of the Project
+- **AI-Powered Email Summarization**: Automatically generate concise summaries of long emails using advanced NLP models
+- **Smart Email Categorization**: Emails are automatically categorized into General, Work, Personal, and Important
+- **Modern User Interface**: Clean, responsive design with smooth animations and intuitive navigation
+- **Advanced Search**: Quickly find emails using the powerful search functionality
+- **Email Statistics**: Track your email usage patterns with detailed statistics
+- **Secure Authentication**: Robust user authentication with password hashing and reset functionality
+- **Profile Management**: Customize your profile with a personal image and account settings
 
-- **User-Friendly Interface**: The application features a clean and intuitive interface that enhances user experience.
-- **Scalability**: Built with Flask, the application is highly scalable and can handle increasing loads efficiently.
-- **AI Integration**: Incorporates AI features to provide intelligent insights and automate tasks.
-- **Cross-Device Compatibility**: The responsive design ensures accessibility across various devices.
-- **Extensibility**: The modular architecture allows for easy addition of new features and functionalities.
+## Tech Stack
 
-## Major Libraries Used
+### Frontend
+- HTML5, CSS3, JavaScript
+- Bootstrap 4.5 for responsive design
+- Custom animations and transitions
+- Modern UI components with glassmorphism effects
 
-- **Flask**: A lightweight WSGI web application framework in Python that provides the core functionality for the backend.
-- **SQLAlchemy**: An SQL toolkit and Object-Relational Mapping (ORM) library for Python, used for database interactions.
-- **Flask-Migrate**: Handles SQLAlchemy database migrations for Flask applications using Alembic.
-- **Flask-Login**: Provides user session management for Flask applications.
-- **TensorFlow/PyTorch**: Used for implementing AI features and machine learning models.
-- **Transformers**: A library by Hugging Face that provides state-of-the-art general-purpose architectures for natural language understanding and generation.
+### Backend
+- Python 3.10
+- Flask web framework
+- SQLAlchemy ORM
+- Flask-Login for authentication
+- Flask-Bcrypt for password hashing
+- Flask-Migrate for database migrations
 
-## Transformer Library and Model
+### AI/ML
+- Transformers library by Hugging Face
+- BERT-based models for text summarization
+- Custom NLP pipelines for email categorization
 
-The project utilizes the Transformers library by Hugging Face, which provides a wide range of pre-trained models for various natural language processing tasks. The specific model used in this project is the BERT (Bidirectional Encoder Representations from Transformers) model. BERT is designed to understand the context of a word in search queries, making it highly effective for tasks such as text classification, sentiment analysis, and question answering.
+### Database
+- SQLite (with plans to migrate to PostgreSQL)
 
-## Tech Stack Used
+## Installation
 
-The project utilizes a modern tech stack to ensure high performance, scalability, and maintainability. The key components of the tech stack include:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/ai-email-client.git
+   cd ai-email-client
+   ```
 
-- **Frontend**:
-  - **HTML/CSS**: For structuring and styling the web pages.
-  - **JavaScript**: For adding interactivity to the web pages.
-  - **React**: A JavaScript library for building user interfaces, ensuring a responsive and dynamic frontend.
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   # On Windows
+   venv\Scripts\activate
+   # On macOS/Linux
+   source venv/bin/activate
+   ```
 
-- **Backend**:
-  - **Python**: The primary programming language used for backend development.
-  - **Flask**: A lightweight WSGI web application framework for building the backend services.
-  - **SQLAlchemy**: An ORM library for database interactions.
-  - **Flask-Migrate**: For handling database migrations.
-  - **Flask-Login**: For managing user sessions and authentication.
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-- **Database**:
-  - **SQLite**: A lightweight, disk-based database used for storing and managing data.
+4. Initialize the database:
+   ```bash
+   set FLASK_APP=run.py
+   flask db init
+   flask db migrate
+   flask db upgrade
+   ```
 
-- **AI/ML**:
-  - **TensorFlow/PyTorch**: Libraries used for implementing AI features and machine learning models.
-  - **Transformers**: A library by Hugging Face for natural language processing tasks.
+5. Run the application:
+   ```bash
+   python run.py
+   ```
 
-- **Version Control**:
-  - **Git**: For version control and collaboration.
-  - **GitHub**: For hosting the repository and managing project collaboration.
-
-## Install the Requirements
-
-- Install Python 3.10 from the official [Python website](https://www.python.org/downloads/).
-- Clone the repository:
-    ```
-    git clone <repository-url>
-    ```
-- Navigate to the project directory:
-    ```
-    cd <project-directory>
-    ```
-- Create a virtual environment:
-    ```
-    python -m venv venv
-    ```
-- Activate the virtual environment:
-    - On Windows:
-        ```
-        venv\Scripts\activate
-        ```
-    - On macOS/Linux:
-        ```
-        source venv/bin/activate
-        ```
-- Install the required libraries:
-    ```
-    pip install -r requirements.txt
-    ```
-
-## To Initialize the Database
+## Project Structure
 
 ```
-set FLASK_APP=run.py
-flask db init
-flask db migrate
-flask db upgrade
+AI-Email-Client/
+├── Project/
+│   ├── static/
+│   │   ├── css/
+│   │   └── profile_pics/
+│   ├── templates/
+│   ├── __init__.py
+│   ├── models.py
+│   ├── routes.py
+│   └── forms.py
+├── migrations/
+├── requirements.txt
+├── run.py
+└── README.md
 ```
 
-## Next Things to Add
+## Features in Detail
 
-- Migerate to PostreSQL
-- Clean up the front end
-- Add more QoL features
-- Add AI features
-- Implement user authentication and authorization
-- Optimize database queries for better performance
-- Add comprehensive unit and integration tests
+### Email Management
+- Compose, send, and receive emails
+- View inbox and sent items
+- Delete emails
+- Categorize emails
+- Search functionality
+
+### AI Features
+- Automatic email summarization
+- Smart categorization
+- Email statistics and insights
+- Top recipients tracking
+
+### User Features
+- Secure registration and login
+- Profile customization
+- Password reset functionality
+- Account management
+
+## Future Enhancements
+
+- [ ] Migrate to PostgreSQL for better scalability
+- [ ] Implement real-time email notifications
+- [ ] Add email templates and scheduling
+- [ ] Enhance AI features with sentiment analysis
+- [ ] Add support for multiple email accounts
+- [ ] Implement advanced search filters
+- [ ] Add dark mode support
+- [ ] Improve mobile responsiveness
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

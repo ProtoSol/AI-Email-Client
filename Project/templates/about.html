@@ -8,11 +8,19 @@
     body {
         background: linear-gradient(135deg, #f5aad0, #fb9106);
         animation: fadeIn 1s ease-in-out;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
-    
+
     @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 
     .card {
@@ -21,45 +29,211 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         animation: slideUp 0.5s ease-in-out;
         backdrop-filter: blur(10px);
+        margin-bottom: 2rem;
     }
 
     @keyframes slideUp {
-        from { transform: translateY(20px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .feature-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #0d6efd;
+    }
+
+    .tech-icon {
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+        color: #6c757d;
+    }
+
+    .content-container {
+        flex: 1;
+        margin-bottom: 2rem;
     }
 </style>
 
-<div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h2 class="mb-0">About AI Email Client</h2>
-        </div>
-        <div class="card-body">
-            <p>Welcome to the AI Email Client project! This project is designed to provide a feature-rich email client with AI-powered summarization capabilities.</p>
-            <h4>Features</h4>
-            <ul>
-                <li>User Registration and Login</li>
-                <li>Profile Management</li>
-                <li>Compose, Send, and Receive Emails</li>
-                <li>Inbox and Sent Emails Management</li>
-                <li>AI-Powered Email Summarization using the Transformer Library</li>
-                <li>Password Reset Functionality</li>
-            </ul>
-            <h4>Technologies Used</h4>
-            <ul>
-                <li>Flask - Web Framework</li>
-                <li>Flask-SQLAlchemy - Database ORM</li>
-                <li>Flask-Bcrypt - Password Hashing</li>
-                <li>Flask-Login - User Session Management</li>
-                <li>Flask-Mail - Email Sending</li>
-                <li>Flask-Migrate - Database Migrations</li>
-                <li>Transformers - AI Summarization</li>
-                <li>Bootstrap - Frontend Framework</li>
-            </ul>
-            <h4>How to Use</h4>
-            <p>To get started, register for an account or log in if you already have one. Once logged in, you can compose new emails, view your inbox, and manage your sent emails. Use the "Summarize" button to get a quick summary of any email.</p>
-            <p><strong>Note:</strong> Passwords must be at least 8 characters long and contain a mix of letters and numbers.</p>
-        </div>
-    </div>
-</div>
-{% endblock %}
+<div class="content-container">
+    <div class="container mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">About AI Email Client</h2>
+            </div>
+            <div class="card-body">
+                <p class="lead">Welcome to AI Email Client - a modern email management solution powered by artificial
+                    intelligence. Our platform combines traditional email functionality with cutting-edge AI features to
+                    enhance your email experience.</p>
+
+                <h4 class="mt-4">Core Features</h4>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="text-center">
+                            <i class="bi bi-robot feature-icon"></i>
+                            <h5>AI Summarization</h5>
+                            <p>Get instant summaries of long emails using advanced NLP models, saving you time and
+                                improving
+                                productivity.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="text-center">
+                            <i class="bi bi-tags feature-icon"></i>
+                            <h5>Smart Categorization</h5>
+                            <p>Emails are automatically organized into categories (General, Work, Personal, Important)
+                                for
+                                better management.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="text-center">
+                            <i class="bi bi-graph-up feature-icon"></i>
+                            <h5>Email Analytics</h5>
+                            <p>Track your email patterns with detailed statistics and insights about your communication
+                                habits.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="mt-4">Key Features</h4>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item bg-transparent">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Modern, responsive interface with smooth animations
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Advanced search functionality for quick email retrieval
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Secure authentication with password reset capability
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <div class="container mt-4">
+                            <div class="card shadow-sm mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h2 class="mb-0">About AI Email Client</h2>
+                                </div>
+                                <div class="card-body">
+                                    <p class="lead">Welcome to AI Email Client - a modern email management solution
+                                        powered by artificial
+                                        intelligence. Our platform combines traditional email functionality with
+                                        cutting-edge AI features to
+                                        enhance your email experience.</p>
+
+                                    <h4 class="mt-4">Core Features</h4>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-4">
+                                            <div class="text-center">
+                                                <i class="bi bi-robot feature-icon"></i>
+                                                <h5>AI Summarization</h5>
+                                                <p>Get instant summaries of long emails using advanced NLP models,
+                                                    saving you time and improving
+                                                    productivity.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-4">
+                                            <div class="text-center">
+                                                <i class="bi bi-tags feature-icon"></i>
+                                                <h5>Smart Categorization</h5>
+                                                <p>Emails are automatically organized into categories (General, Work,
+                                                    Personal, Important) for
+                                                    better management.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-4">
+                                            <div class="text-center">
+                                                <i class="bi bi-graph-up feature-icon"></i>
+                                                <h5>Email Analytics</h5>
+                                                <p>Track your email patterns with detailed statistics and insights about
+                                                    your communication
+                                                    habits.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4 class="mt-4">Key Features</h4>
+                                    <ul class="list-group list-group-flush mb-4">
+                                        <li class="list-group-item bg-transparent">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            Modern, responsive interface with smooth animations
+                                        </li>
+                                        <li class="list-group-item bg-transparent">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            Advanced search functionality for quick email retrieval
+                                        </li>
+                                        <li class="list-group-item bg-transparent">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            Secure authentication with password reset capability
+                                        </li>
+                                        <li class="list-group-item bg-transparent">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            Profile customization with personal image upload
+                                        </li>
+                                        <li class="list-group-item bg-transparent">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            Real-time email statistics and usage patterns
+                                        </li>
+                                    </ul>
+
+                                    <h4 class="mt-4">Technology Stack</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5>Backend</h5>
+                                            <ul class="list-unstyled">
+                                                <li><i class="bi bi-code-slash tech-icon"></i>Python 3.10</li>
+                                                <li><i class="bi bi-server tech-icon"></i>Flask Web Framework</li>
+                                                <li><i class="bi bi-database tech-icon"></i>SQLAlchemy ORM</li>
+                                                <li><i class="bi bi-shield-lock tech-icon"></i>Flask-Login &
+                                                    Flask-Bcrypt</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5>Frontend</h5>
+                                            <ul class="list-unstyled">
+                                                <li><i class="bi bi-bootstrap tech-icon"></i>Bootstrap 4.5</li>
+                                                <li><i class="bi bi-file-earmark-code tech-icon"></i>HTML5 & CSS3</li>
+                                                <li><i class="bi bi-file-earmark-code-fill tech-icon"></i>JavaScript
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <h4 class="mt-4">AI Integration</h4>
+                                    <p>Our application leverages the power of the Transformers library by Hugging Face,
+                                        utilizing BERT-based
+                                        models for:</p>
+                                    <ul>
+                                        <li>Email summarization</li>
+                                        <li>Smart categorization</li>
+                                        <li>Content analysis</li>
+                                    </ul>
+
+                                    <h4 class="mt-4">Getting Started</h4>
+                                    <p>To begin using AI Email Client:</p>
+                                    <ol>
+                                        <li>Register for a new account or log in if you already have one</li>
+                                        <li>Customize your profile settings</li>
+                                        <li>Start composing and receiving emails</li>
+                                        <li>Use the "Summarize" button to get AI-generated summaries</li>
+                                        <li>Explore your email statistics in the sidebar</li>
+                                    </ol>
+
+                                    <div class="alert alert-info mt-4">
+                                        <strong>Note:</strong> For security, passwords must be at least 8 characters
+                                        long and contain a mix of
+                                        letters and numbers.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endblock %}
