@@ -43,6 +43,32 @@ def summarize():
     summary = summarizer(input_text, max_length=max_length, min_length=30, do_sample=False)
     return jsonify(summary=summary[0]['summary_text'])
 
+@app.route('/smart_reply', methods=['POST'])
+def smart_reply():
+    data = request.get_json()
+    body = data.get('body', '')
+
+    # Create a more contextual prompt for the model
+    prompt = f"""You are an email assistant. Given the following email message, generate a professional and concise reply.
+    The reply should be natural and conversational, addressing the points in the original message.
+
+    Original message: {body}
+
+    Reply:"""
+
+    # Generate three different replies
+    replies = []
+    for i in range(3):
+        # Add some variation to the prompt for each reply
+        variation = f"Reply {i+1} (different tone/style):"
+        current_prompt = prompt.replace("Reply:", variation)
+
+        # Generate the reply
+        reply = summarizer(current_prompt, max_length=100, min_length=30, do_sample=True, num_return_sequences=1)[0]['summary_text']
+        replies.append(reply)
+
+    return jsonify(replies=replies)
+
 # Home
 @app.route('/')
 @app.route('/home')
@@ -210,6 +236,19 @@ def compose():
         else:
             flash('The recipient email does not exist.', 'danger')
             return redirect(url_for('compose'))
+
+    # Handle reply parameters
+    reply_to = request.args.get('reply_to')
+    subject = request.args.get('subject', '')
+    body = request.args.get('body', '')
+
+    if reply_to:
+        form.recipient.data = reply_to
+    if subject:
+        form.subject.data = subject
+    if body:
+        form.body.data = body
+
     return render_template('compose.html', form=form, datetime=datetime, timedelta=timedelta, Email=Email)
 
 @app.route("/inbox/<category>")
