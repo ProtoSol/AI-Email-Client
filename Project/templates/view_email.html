@@ -3,108 +3,66 @@
 {% block title %}View Email - AI Email Client{% endblock %}
 
 {% block content %}
-<style>
-    body {
-        position: relative;
-        color: black;
-        /* Ensure text is visible */
-    }
-
-    /* Light blur effect to make background visible */
-    .blur-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.05);
-        /* Make it more transparent */
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        z-index: 0;
-    }
-
-    /* Ensure inbox list is properly positioned */
-    .inbox-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow-y: auto;
-        z-index: 1;
-    }
-
-    /* Improve visibility of email content */
-    .content-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(255, 255, 255, 0.9);
-        /* More transparency */
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-        width: 80%;
-        max-width: 600px;
-        z-index: 10;
-    }
-
-    .card {
-        background: rgba(255, 255, 255, 0.95);
-        /* Semi-transparent */
-        color: black;
-        /* Ensure text is readable */
-    }
-
-    /* Improve text readability */
-    .card-header h2,
-    .card-body p,
-    .card-body strong {
-        color: black !important;
-    }
-</style>
-
-<div class="blur-background"></div>
-<div class="inbox-container">
-    {% include 'inbox.html' %}
-</div>
-
-<div class="container mt-4 content-container">
-    <a href="{{ url_for('inbox') }}" class="btn btn-secondary mb-3">&larr; Back to Inbox</a>
-    <div class="card shadow-lg">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h2 class="mb-0">{{ email.subject }}</h2>
-            <small>{{ email.date.strftime('%d %b %Y, %H:%M') }}</small>
+<div class="container mt-4">
+    <div class="card card-glass fade-in">
+        <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center py-3">
+            <div>
+                <a href="{{ url_for('inbox') }}" class="btn btn-outline-primary mb-3">
+                    <i class="fas fa-arrow-left me-1"></i>Back to Inbox
+                </a>
+                <h2 class="text-dark mb-0">{{ email.subject }}</h2>
+            </div>
+            <small class="text-muted">
+                <i class="fas fa-clock me-1"></i>{{ email.date.strftime('%d %b %Y, %H:%M') }}
+            </small>
         </div>
         <div class="card-body">
-            <p><strong>From:</strong> {{ email.sender }}</p>
-            <p><strong>Category:</strong> {{ email.category }}</p>
-            <hr>
-            <p class="email-body">{{ email.body }}</p>
+            <div class="mb-4">
+                <p class="mb-2">
+                    <i class="fas fa-user me-2"></i>
+                    <strong>From:</strong> {{ email.sender }}
+                </p>
+                <p class="mb-2">
+                    <i class="fas fa-folder me-2"></i>
+                    <strong>Category:</strong> {{ email.category }}
+                </p>
+            </div>
 
-            <div class="d-flex justify-content-between mt-4">
+            <div class="email-body p-3 bg-light rounded mb-4">
+                {{ email.body }}
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
                 <form action="{{ url_for('delete_email', email_id=email.id) }}" method="POST"
                     onsubmit="return confirmDelete();">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>Delete
+                    </button>
                 </form>
-                <div>
-                    <button id="summarize-btn" class="btn btn-primary">Summarize</button>
-                    <button id="smart-reply-btn" class="btn btn-success ml-2">Smart Reply</button>
+                <div class="d-flex gap-2">
+                    <button id="summarize-btn" class="btn btn-primary">
+                        <i class="fas fa-file-alt me-1"></i>Summarize
+                    </button>
+                    <button id="smart-reply-btn" class="btn btn-success">
+                        <i class="fas fa-reply me-1"></i>Smart Reply
+                    </button>
                 </div>
             </div>
 
-            <div id="loading" class="mt-3 text-muted" style="display: none;">Summarizing... Please wait.</div>
-            <div id="summary" class="alert alert-info mt-3" style="display: none;"></div>
+            <div id="loading" class="mt-3 text-muted" style="display: none;">
+                <i class="fas fa-spinner fa-spin me-2"></i>Summarizing... Please wait.
+            </div>
+            <div id="summary" class="alert alert-info mt-3 card-glass" style="display: none;"></div>
 
-            <div id="smart-reply-loading" class="mt-3 text-bold" style="display: none;">Generating smart replies...
-                Please wait.</div>
+            <div id="smart-reply-loading" class="mt-3 text-muted" style="display: none;">
+                <i class="fas fa-spinner fa-spin me-2"></i>Generating smart replies... Please wait.
+            </div>
             <div id="smart-replies" class="mt-3" style="display: none;">
-                <h5>Suggested Replies:</h5>
+                <h5 class="text-dark mb-3">Suggested Replies:</h5>
                 <div class="list-group">
-                    <button type="button"
-                        class="list-group-item list-group-item-action smart-reply-option">Loading...</button>
+                    <button type="button" class="list-group-item list-group-item-action smart-reply-option">
+                        <i class="fas fa-spinner fa-spin me-2"></i>Loading...
+                    </button>
                 </div>
             </div>
         </div>
@@ -182,7 +140,7 @@
                         const button = document.createElement("button");
                         button.type = "button";
                         button.className = "list-group-item list-group-item-action smart-reply-option";
-                        button.textContent = reply;
+                        button.innerHTML = `<i class="fas fa-reply me-2"></i>${reply}`;
                         button.addEventListener("click", function () {
                             window.location.href = `{{ url_for('compose') }}?reply_to={{ email.sender }}&subject=Re: {{ email.subject }}&body=${encodeURIComponent(reply)}`;
                         });
@@ -194,7 +152,9 @@
                 .catch(error => {
                     loadingIndicator.style.display = "none";
                     smartReplyBtn.disabled = false;
-                    repliesList.innerHTML = "<button type='button' class='list-group-item list-group-item-action'>An error occurred while generating replies.</button>";
+                    repliesList.innerHTML = `<button type="button" class="list-group-item list-group-item-action">
+                        <i class="fas fa-exclamation-circle me-2"></i>An error occurred while generating replies.
+                    </button>`;
                     repliesDiv.style.display = "block";
                 });
         });

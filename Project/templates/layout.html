@@ -7,52 +7,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}AI Email Client{% endblock %}</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 
-<body>
+<body class="bg-light">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-        <a class="navbar-brand" href="{{ url_for('home') }}">AI Email Client</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('inbox') }}">Inbox</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('sent') }}">Sent</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text" href="{{ url_for('compose') }}">Compose</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('account') }}">Account</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('about') }}">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="{{ url_for('logout') }}">Logout</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('about') }}">About</a>
-                </li>
-                {% endif %}
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-glass fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
+                <i class="fas fa-robot me-2"></i>AI Email Client
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('inbox') }}">
+                            <i class="fas fa-inbox me-1"></i>Inbox
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('sent') }}">
+                            <i class="fas fa-paper-plane me-1"></i>Sent
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-compose" href="{{ url_for('compose') }}">
+                            <i class="fas fa-edit me-1"></i>Compose
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('account') }}">
+                            <i class="fas fa-user me-1"></i>Account
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">
+                            <i class="fas fa-info-circle me-1"></i>About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{{ url_for('logout') }}">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">
+                            <i class="fas fa-user-plus me-1"></i>Register
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">
+                            <i class="fas fa-info-circle me-1"></i>About
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item d-flex align-items-center ms-3">
+                        <button id="theme-toggle" class="btn btn-outline-secondary btn-sm" title="Toggle theme">
+                            <i id="theme-icon" class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -60,34 +89,104 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     {% for category, message in messages %}
-    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert"
-        style="position: fixed; top: 80px; right: 20px; z-index: 1000; min-width: 300px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+    <div class="alert alert-{{ category }} alert-dismissible fade show flash-message" role="alert">
         {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
     {% endif %}
     {% endwith %}
 
     <!-- Main Content -->
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-12">
-                {% block content %}{% endblock %}
-            </div>
-        </div>
-    </div>
+    <main class="container mt-5 pt-4">
+        {% block content %}{% endblock %}
+    </main>
 
-    <!-- Footer -->
-    <!-- <footer class="bg-transparent text-white text-center py-3 mt-5" style="position: relative; width: 100%;">
-        <p>&copy; 2025 AI Email Client. All rights reserved.</p>
-    </footer> -->
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body.dark-theme {
+            background: linear-gradient(270deg, #232526, #414345, #232526, #232526) !important;
+            color: #f3f4f6 !important;
+        }
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+        .dark-theme .navbar-glass {
+            background: rgba(30, 30, 40, 0.85) !important;
+            color: #f3f4f6 !important;
+        }
+
+        .dark-theme .card-glass,
+        .dark-theme .feature-card {
+            background: rgba(40, 40, 60, 0.85) !important;
+            color: #f3f4f6 !important;
+        }
+
+        .dark-theme .form-control {
+            background: #232526 !important;
+            color: #f3f4f6 !important;
+            border-color: #444 !important;
+        }
+
+        .dark-theme .btn-primary,
+        .dark-theme .btn-outline-primary {
+            background: #4f46e5 !important;
+            color: #fff !important;
+            border: none !important;
+        }
+
+        .dark-theme .btn-outline-secondary {
+            color: #f3f4f6 !important;
+            border-color: #888 !important;
+        }
+
+        .dark-theme .alert {
+            background: rgba(40, 40, 60, 0.95) !important;
+            color: #f3f4f6 !important;
+            border: none !important;
+        }
+
+        .dark-theme .bg-light {
+            background-color: #232526 !important;
+        }
+
+        .dark-theme .bg-white {
+            background-color: #232526 !important;
+        }
+
+        .dark-theme .text-dark {
+            color: #f3f4f6 !important;
+        }
+
+        .dark-theme .navbar-brand,
+        .dark-theme .nav-link {
+            color: #f3f4f6 !important;
+        }
+    </style>
+    <script>
+        // Theme toggle logic
+        function setTheme(dark) {
+            if (dark) {
+                document.body.classList.add('dark-theme');
+                document.getElementById('theme-icon').classList.remove('fa-moon');
+                document.getElementById('theme-icon').classList.add('fa-sun');
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.getElementById('theme-icon').classList.remove('fa-sun');
+                document.getElementById('theme-icon').classList.add('fa-moon');
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const themeToggle = document.getElementById('theme-toggle');
+            // Load theme from localStorage
+            let dark = localStorage.getItem('theme') === 'dark';
+            setTheme(dark);
+            themeToggle.addEventListener('click', function () {
+                dark = !document.body.classList.contains('dark-theme');
+                setTheme(dark);
+                localStorage.setItem('theme', dark ? 'dark' : 'light');
+            });
+        });
+    </script>
 </body>
 
 </html>

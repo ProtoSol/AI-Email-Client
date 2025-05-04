@@ -1,151 +1,73 @@
 {% extends 'layout.html' %}
 
+{% block title %}Login - AI Email Client{% endblock %}
+
 {% block content %}
-<style>
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(-50px);
-        }
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-6 col-lg-5">
+            <div class="card card-glass fade-in">
+                <div class="card-body p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-robot fa-3x text-primary mb-3"></i>
+                        <h2 class="text-dark fw-bold">Welcome Back!</h2>
+                        <p class="text-muted">Sign in to continue and access your emails</p>
+                    </div>
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
 
-    body {
-        background: linear-gradient(135deg, #667eea, #764ba2, #6a11cb, #2575fc, #ff758c, #ff7eb3, #fad0c4, #ffdde1);
-        background-size: 400% 400%;
-        animation: gradientBG 20s infinite alternate ease-in-out;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Poppins', sans-serif;
-        position: relative;
-    }
+                        <div class="form-group mb-4">
+                            <label class="form-label text-dark">
+                                <i class="fas fa-envelope me-2"></i>Email
+                            </label>
+                            {{ form.email(class="form-control", placeholder="Enter your email") }}
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback d-block">
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ form.email.errors[0] }}
+                            </div>
+                            {% endif %}
+                        </div>
 
-    @keyframes gradientBG {
-        0% {
-            background-position: 0% 50%;
-        }
+                        <div class="form-group mb-4">
+                            <label class="form-label text-dark">
+                                <i class="fas fa-lock me-2"></i>Password
+                            </label>
+                            {{ form.password(class="form-control", placeholder="Enter your password") }}
+                            {% if form.password.errors %}
+                            <div class="invalid-feedback d-block">
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ form.password.errors[0] }}
+                            </div>
+                            {% endif %}
+                        </div>
 
-        50% {
-            background-position: 100% 50%;
-        }
+                        <div class="form-group form-check mb-4">
+                            {{ form.remember(class="form-check-input") }}
+                            <label class="form-check-label text-dark">
+                                Remember me
+                            </label>
+                        </div>
 
-        100% {
-            background-position: 0% 50%;
-        }
+                        <button type="submit" class="btn btn-primary w-100 mb-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </button>
 
-        /* 0% { background: linear-gradient(135deg, #ff758c, #ff7eb3, #fad0c4, #ffdde1); }
-        25% { background: linear-gradient(135deg, #667eea, #764ba2, #6a11cb, #2575fc); }
-        50% { background: linear-gradient(135deg, #ff9a9e, #ffdde1, #ff7eb3, #ff758c); }
-        75% { background: linear-gradient(135deg, #a1c4fd, #c2e9fb, #89f7fe, #66a6ff); }
-        100% { background: linear-gradient(135deg, #ff758c, #ff7eb3, #fad0c4, #ffdde1); } */
-    }
+                        <div class="text-center">
+                            <a href="{{ url_for('reset_request') }}" class="text-muted text-decoration-none">
+                                <i class="fas fa-key me-1"></i>Forgot Password?
+                            </a>
+                        </div>
+                    </form>
 
-    .navbar {
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(8px);
-        padding: 10px 20px;
-        border-radius: 10px;
-        color: white;
-        font-size: 1.2rem;
-        font-weight: bold;
-    }
-
-    .card {
-        border-radius: 15px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s, box-shadow 0.3s;
-        background: rgba(255, 255, 255, 0.95);
-        padding: 25px;
-        backdrop-filter: blur(12px);
-        z-index: 10;
-        animation: fadeInUp 2s ease-in-out;
-    }
-
-    .card:hover {
-        transform: scale(1.03);
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #ff758c, #ff7eb3);
-        border: none;
-        transition: all 0.3s;
-        font-weight: bold;
-        border-radius: 8px;
-        padding: 10px;
-    }
-
-    .btn-primary:hover {
-        background: linear-gradient(135deg, #ff7eb3, #ff758c);
-        transform: scale(1.05);
-    }
-
-    .text-muted:hover {
-        text-decoration: underline;
-    }
-
-    .form-control {
-        border-radius: 8px;
-        padding: 12px;
-    }
-
-    .form-control:focus {
-        box-shadow: 0 0 10px rgba(255, 118, 136, 0.5);
-        border-color: #ff758c;
-    }
-
-    footer {
-        background: transparent !important;
-    }
-</style>
-
-
-
-<div class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
-    <div class="card shadow-lg" style="width: 100%; max-width: 400px;">
-        <div class="card-body">
-            <h2 class="card-title text-center mb-3 text-dark fw-bold">Welcome Back!</h2>
-            <p class="text-center text-muted">Sign in to continue and access your emails</p>
-            <form method="POST" action="">
-                {{ form.hidden_tag() }}
-
-                <div class="form-group mb-3">
-                    {{ form.email.label(class="form-label fw-bold") }}
-                    {{ form.email(class="form-control", placeholder="Enter your email") }}
-                    {% if form.email.errors %}
-                    <small class="text-danger">{{ form.email.errors[0] }}</small>
-                    {% endif %}
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-0">
+                            Don't have an account?
+                            <a href="{{ url_for('register') }}" class="text-primary fw-bold text-decoration-none">
+                                Register
+                            </a>
+                        </p>
+                    </div>
                 </div>
-
-                <div class="form-group mb-3">
-                    {{ form.password.label(class="form-label fw-bold") }}
-                    {{ form.password(class="form-control", placeholder="Enter your password") }}
-                    {% if form.password.errors %}
-                    <small class="text-danger">{{ form.password.errors[0] }}</small>
-                    {% endif %}
-                </div>
-
-                <div class="form-group form-check mb-3">
-                    {{ form.remember(class="form-check-input") }}
-                    {{ form.remember.label(class="form-check-label") }}
-                </div>
-                <button type="submit" class="btn btn-outline-primary">Login</button>
-            </form>
-            <div class="mt-3 text-center">
-                <a href="{{ url_for('reset_request') }}" class="text-muted">Forgot Password?</a>
-            </div>
-            <div class="mt-3 text-center">
-                <small>
-                    Don't have an account?
-                    <a href="{{ url_for('register') }}" class="text-primary fw-bold">Register</a>
-                </small>
             </div>
         </div>
     </div>

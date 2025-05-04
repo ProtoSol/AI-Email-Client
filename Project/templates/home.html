@@ -12,54 +12,93 @@
     </p>
     <hr class="my-4 border-light">
     {% if current_user.is_authenticated %}
-        <a class="btn btn-primary btn-lg animated-button mr-2" href="{{ url_for('inbox') }}" role="button">
-            <i class="fas fa-envelope"></i> Go to Inbox
-        </a>
-        <a class="btn btn-success btn-lg animated-button" href="{{ url_for('compose') }}" role="button">
-            <i class="fas fa-paper-plane"></i> Compose Email
-        </a>
+    <a class="btn btn-primary btn-lg animated-button mr-2" href="{{ url_for('inbox') }}" role="button">
+        <i class="fas fa-envelope"></i> Go to Inbox
+    </a>
+    <a class="btn btn-success btn-lg animated-button" href="{{ url_for('compose') }}" role="button">
+        <i class="fas fa-paper-plane"></i> Compose Email
+    </a>
     {% else %}
-        <a class="btn btn-primary btn-lg animated-button mr-2" href="{{ url_for('login') }}" role="button">
-            <i class="fas fa-sign-in-alt"></i> Login
-        </a>
-        <a class="btn btn-outline-light btn-lg animated-button" href="{{ url_for('register') }}" role="button">
-            <i class="fas fa-user-plus"></i> Register
-        </a>
+    <a class="btn btn-primary btn-lg animated-button mr-2" href="{{ url_for('login') }}" role="button">
+        <i class="fas fa-sign-in-alt"></i> Login
+    </a>
+    <a class="btn btn-outline-light btn-lg animated-button" href="{{ url_for('register') }}" role="button">
+        <i class="fas fa-user-plus"></i> Register
+    </a>
     {% endif %}
 </div>
 
 <!-- Features Section -->
 <div class="container mt-5">
-    <div class="row">
+    <div class="row g-4">
         <div class="col-md-4">
-            <div class="card feature-card text-center shadow-sm">
-                <div class="card-body">
-                    <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+            <div class="card feature-card h-100 text-center shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <i class="fas fa-brain fa-3x mb-3" style="color:#2196f3;"></i>
                     <h5 class="card-title">AI Suggestions</h5>
-                    <p class="card-text">
+                    <p class="card-text mb-0">
                         Get AI-powered summarization for long emails.
                     </p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card feature-card text-center shadow-sm">
-                <div class="card-body">
-                    <i class="fas fa-inbox fa-3x text-success mb-3"></i>
+            <div class="card feature-card h-100 text-center shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <i class="fas fa-minimize fa-3x mb-3" style="color:#43a047;"></i>
                     <h5 class="card-title">Minimalistic UI</h5>
-                    <p class="card-text">
+                    <p class="card-text mb-0">
                         Clean and Fast User Interface for better productivity
                     </p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card feature-card text-center shadow-sm">
-                <div class="card-body">
-                    <i class="fas fa-sync-alt fa-3x text-warning mb-3"></i>
+            <div class="card feature-card h-100 text-center shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <i class="fas fa-sync-alt fa-3x mb-3" style="color:#ffc107;"></i>
                     <h5 class="card-title">Seamless Integration</h5>
-                    <p class="card-text">
+                    <p class="card-text mb-0">
                         Connect your email accounts and manage them all in one place.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Info Cards Section -->
+<div class="container mt-5 mb-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card feature-card h-100 text-center shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <i class="fas fa-shield-alt fa-3x mb-3" style="color:#43a047;"></i>
+                    <h5 class="card-title">Secure & Private</h5>
+                    <p class="card-text mb-0">
+                        Your data is encrypted and protected. We value your privacy and never share your information.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card feature-card h-100 text-center shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <i class="fas fa-headset fa-3x mb-3" style="color:#2196f3;"></i>
+                    <h5 class="card-title">24/7 Support</h5>
+                    <p class="card-text mb-0">
+                        Our team is always here to help you with any questions or issues, any time of day.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card feature-card h-100 text-center shadow-sm">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <i class="fas fa-magic fa-3x mb-3" style="color:#ffc107;"></i>
+                    <h5 class="card-title">Smart Automation</h5>
+                    <p class="card-text mb-0">
+                        Let AI handle repetitive tasks and boost your productivity with intelligent automation.
                     </p>
                 </div>
             </div>
@@ -81,16 +120,24 @@
     /* Gradient Background Animation */
     body {
         background: linear-gradient(270deg, #6a11cb, #2575fc, #ff512f, #dd2476);
-        
+
         background-size: 400% 400%;
         animation: gradientBG 20s infinite alternate ease-in-out;
         color: white;
     }
 
     @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
     }
 
     /* Hero Section */
@@ -104,6 +151,7 @@
     .animated-button {
         transition: all 0.3s ease-in-out;
     }
+
     .animated-button:hover {
         transform: scale(1.05);
         box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
@@ -116,6 +164,7 @@
         background: rgba(255, 255, 255, 0.2);
         color: white;
     }
+
     .feature-card:hover {
         transform: translateY(-5px);
     }

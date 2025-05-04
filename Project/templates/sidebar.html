@@ -1,134 +1,180 @@
 {% if current_user.is_authenticated %}
-<!-- Sidebar Component -->
-<div class="sidebar bg-light p-3 rounded shadow-sm">
-    <h5 class="mb-4">Email Statistics</h5>
+<div class="sidebar card card-glass">
+    <div class="card-body p-3">
+        <h5 class="d-flex align-items-center mb-4">
+            <i class="fas fa-chart-pie me-2 text-primary"></i>Email Statistics
+        </h5>
 
-    <div class="stat-item mb-3">
-        <h6>Total Emails Sent</h6>
-        <p class="text-primary">{{ current_user.emails|length }}</p>
-    </div>
-
-    <div class="stat-item mb-3">
-        <h6>Last Email Sent</h6>
-        {% if current_user.emails %}
-        <p class="text-muted">{{ current_user.emails[-1].date.strftime('%Y-%m-%d %H:%M') }}</p>
-        <small class="text-muted">To: {{ current_user.emails[-1].recipient }}</small>
-        {% else %}
-        <p class="text-muted">No emails sent yet</p>
-        {% endif %}
-    </div>
-
-    <div class="stat-item mb-3">
-        <h6>Emails Sent Today</h6>
-        {% set today = namespace(count=0) %}
-        {% for email in current_user.emails %}
-        {% if email.date.date() == datetime.utcnow().date() %}
-        {% set today.count = today.count + 1 %}
-        {% endif %}
-        {% endfor %}
-        <p class="text-info">{{ today.count }}</p>
-    </div>
-
-    <div class="stat-item mb-3">
-        <h6>Emails Sent This Week</h6>
-        {% set week = namespace(count=0) %}
-        {% set week_start = datetime.utcnow().date() - timedelta(days=7) %}
-        {% for email in current_user.emails %}
-        {% if email.date.date() >= week_start %}
-        {% set week.count = week.count + 1 %}
-        {% endif %}
-        {% endfor %}
-        <p class="text-info">{{ week.count }}</p>
-    </div>
-
-    <div class="stat-item mb-3">
-        <h6>Email Categories</h6>
-        <div class="category-stats">
-            {% set categories = {} %}
-            {% for email in current_user.emails %}
-            {% if email.category not in categories %}
-            {% set _ = categories.update({email.category: 1}) %}
-            {% else %}
-            {% set _ = categories.update({email.category: categories[email.category] + 1}) %}
-            {% endif %}
-            {% endfor %}
-            {% for category, count in categories.items() %}
-            <div class="d-flex justify-content-between">
-                <span>{{ category }}</span>
-                <span class="badge badge-primary">{{ count }}</span>
+        <div class="stat-item mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0"><i class="fas fa-paper-plane me-2"></i>Total Emails</h6>
+                <span class="badge bg-primary">{{ current_user.emails|length }}</span>
             </div>
-            {% endfor %}
         </div>
-    </div>
 
-    <div class="stat-item mb-3">
-        <h6>Top Recipients</h6>
-        <div class="recipient-stats">
-            {% set recipients = {} %}
-            {% for email in current_user.emails %}
-            {% if email.recipient not in recipients %}
-            {% set _ = recipients.update({email.recipient: 1}) %}
+        <div class="stat-item mb-4">
+            <h6 class="mb-3"><i class="fas fa-clock me-2"></i>Last Email Sent</h6>
+            {% if current_user.emails %}
+            <div class="small">
+                <div class="text-primary mb-1">{{ current_user.emails[-1].date.strftime('%Y-%m-%d %H:%M') }}</div>
+                <div class="text-muted">
+                    <i class="fas fa-user me-1"></i>{{ current_user.emails[-1].recipient }}
+                </div>
+            </div>
             {% else %}
-            {% set _ = recipients.update({email.recipient: recipients[email.recipient] + 1}) %}
+            <p class="text-muted small mb-0">No emails sent yet</p>
+            {% endif %}
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-6">
+                <div class="stat-card card card-glass h-100">
+                    <div class="card-body p-3">
+                        <h6 class="small mb-2">Today</h6>
+                        {% set today = namespace(count=0) %}
+                        {% for email in current_user.emails %}
+                        {% if email.date.date() == datetime.utcnow().date() %}
+                        {% set today.count = today.count + 1 %}
+                        {% endif %}
+                        {% endfor %}
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-envelope text-primary me-2"></i>
+                            <span class="h5 mb-0">{{ today.count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="stat-card card card-glass h-100">
+                    <div class="card-body p-3">
+                        <h6 class="small mb-2">This Week</h6>
+                        {% set week = namespace(count=0) %}
+                        {% set week_start = datetime.utcnow().date() - timedelta(days=7) %}
+                        {% for email in current_user.emails %}
+                        {% if email.date.date() >= week_start %}
+                        {% set week.count = week.count + 1 %}
+                        {% endif %}
+                        {% endfor %}
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calendar text-primary me-2"></i>
+                            <span class="h5 mb-0">{{ week.count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-item mb-4">
+            <h6 class="mb-3"><i class="fas fa-tags me-2"></i>Categories</h6>
+            <div class="category-stats">
+                {% set categories = {} %}
+                {% for email in current_user.emails %}
+                {% if email.category not in categories %}
+                {% set _ = categories.update({email.category: 1}) %}
+                {% else %}
+                {% set _ = categories.update({email.category: categories[email.category] + 1}) %}
+                {% endif %}
+                {% endfor %}
+                {% for category, count in categories.items() %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="small">
+                        {% if category == 'General' %}
+                        <i class="fas fa-inbox text-primary me-2"></i>
+                        {% elif category == 'Work' %}
+                        <i class="fas fa-briefcase text-success me-2"></i>
+                        {% elif category == 'Personal' %}
+                        <i class="fas fa-user text-info me-2"></i>
+                        {% elif category == 'Important' %}
+                        <i class="fas fa-star text-warning me-2"></i>
+                        {% endif %}
+                        {{ category }}
+                    </span>
+                    <span class="badge bg-primary">{{ count }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="stat-item mb-4">
+            <h6 class="mb-3"><i class="fas fa-users me-2"></i>Top Recipients</h6>
+            <div class="recipient-stats">
+                {% set recipients = {} %}
+                {% for email in current_user.emails %}
+                {% if email.recipient not in recipients %}
+                {% set _ = recipients.update({email.recipient: 1}) %}
+                {% else %}
+                {% set _ = recipients.update({email.recipient: recipients[email.recipient] + 1}) %}
+                {% endif %}
+                {% endfor %}
+                {% for recipient, count in recipients.items()|sort(attribute='1', reverse=true) %}
+                {% if loop.index <= 5 %} <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="small text-truncate">
+                        <i class="fas fa-user-circle text-primary me-2"></i>{{ recipient }}
+                    </span>
+                    <span class="badge bg-info">{{ count }}</span>
+            </div>
             {% endif %}
             {% endfor %}
-            {% for recipient, count in recipients.items()|sort(attribute='1', reverse=true) %}
-            {% if loop.index <= 5 %} <div class="d-flex justify-content-between">
-                <span>{{ recipient }}</span>
-                <span class="badge badge-info">{{ count }}</span>
         </div>
-        {% endif %}
-        {% endfor %}
     </div>
 
-    <div class="stat-item mb-3">
-        <h6>Average Emails Per Day</h6>
+    <div class="stat-item mb-4">
+        <h6 class="mb-3"><i class="fas fa-chart-line me-2"></i>Daily Average</h6>
         {% if current_user.emails %}
         {% set first_email = current_user.emails|sort(attribute='date')|first %}
         {% set days_since_first = (datetime.utcnow() - first_email.date).days %}
         {% if days_since_first > 0 %}
-        <p class="text-success">{{ (current_user.emails|length / days_since_first)|round(1) }}</p>
+        <div class="d-flex align-items-center">
+            <i class="fas fa-envelope-open text-success me-2"></i>
+            <span class="h5 mb-0">{{ (current_user.emails|length / days_since_first)|round(1) }}</span>
+        </div>
         {% else %}
-        <p class="text-success">{{ current_user.emails|length }}</p>
+        <div class="d-flex align-items-center">
+            <i class="fas fa-envelope-open text-success me-2"></i>
+            <span class="h5 mb-0">{{ current_user.emails|length }}</span>
+        </div>
         {% endif %}
         {% else %}
-        <p class="text-muted">No emails sent yet</p>
+        <p class="text-muted small mb-0">No emails sent yet</p>
         {% endif %}
     </div>
 
     <div class="stat-item">
-        <h6>Recent Received Emails</h6>
+        <h6 class="mb-3"><i class="fas fa-inbox me-2"></i>Recent Inbox</h6>
         <div class="recent-emails">
             {% set received_emails =
             Email.query.filter_by(recipient=current_user.email).order_by(Email.date.desc()).limit(3).all() %}
             {% if received_emails %}
             {% for email in received_emails %}
-            <div class="recent-email-item mb-2">
-                <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">{{ email.date.strftime('%Y-%m-%d %H:%M') }}</small>
-                    <span class="badge badge-secondary">{{ email.category }}</span>
+            <div class="card card-glass mb-3">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>{{ email.date.strftime('%Y-%m-%d %H:%M') }}
+                        </small>
+                        <span class="badge bg-secondary">{{ email.category }}</span>
+                    </div>
+                    <div class="small mb-1">
+                        <i class="fas fa-user me-1"></i>{{ email.sender }}
+                    </div>
+                    <div class="small mb-2 text-primary">
+                        <i class="fas fa-envelope me-1"></i>{{ email.subject }}
+                    </div>
+                    <div class="email-preview small text-muted mb-2">
+                        {{ email.body[:100] }}{% if email.body|length > 100 %}...{% endif %}
+                    </div>
+                    <a href="{{ url_for('view_email', email_id=email.id) }}" class="btn btn-sm btn-primary w-100">
+                        <i class="fas fa-eye me-1"></i>View Email
+                    </a>
                 </div>
-                <div class="email-sender">
-                    <strong>From:</strong> {{ email.sender }}
-                </div>
-                <div class="email-subject">
-                    <strong>Subject:</strong> {{ email.subject }}
-                </div>
-                <div class="email-preview text-muted">
-                    {{ email.body[:100] }}{% if email.body|length > 100 %}...{% endif %}
-                </div>
-                <a href="{{ url_for('view_email', email_id=email.id) }}"
-                    class="btn btn-sm btn-outline-primary mt-2">View</a>
             </div>
-            {% if not loop.last %}
-            <hr class="my-2">
-            {% endif %}
             {% endfor %}
             {% else %}
-            <p class="text-muted">No received emails</p>
+            <p class="text-muted small mb-0">No received emails</p>
             {% endif %}
         </div>
     </div>
+</div>
 </div>
 
 <style>
@@ -136,59 +182,82 @@
         position: fixed;
         right: 20px;
         top: 80px;
-        width: 250px;
+        width: 300px;
         z-index: 1000;
         max-height: calc(100vh - 100px);
         overflow-y: auto;
+        transition: all 0.3s ease;
     }
 
     .stat-item {
-        border-bottom: 1px solid #eee;
-        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 15px;
     }
 
     .stat-item:last-child {
         border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .stat-card {
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-2px);
     }
 
     .category-stats,
-    .recipient-stats,
-    .recent-emails {
-        max-height: 150px;
+    .recipient-stats {
+        max-height: 200px;
         overflow-y: auto;
+        padding-right: 5px;
     }
 
-    .badge {
-        font-size: 0.8em;
+    .recent-emails {
+        max-height: 500px;
+        overflow-y: auto;
+        padding-right: 5px;
     }
 
-    .recent-email-item {
-        padding: 8px;
-        background-color: #f8f9fa;
-        border-radius: 4px;
+    /* Custom scrollbar */
+    .sidebar::-webkit-scrollbar,
+    .category-stats::-webkit-scrollbar,
+    .recipient-stats::-webkit-scrollbar,
+    .recent-emails::-webkit-scrollbar {
+        width: 4px;
     }
 
-    .email-preview {
-        font-size: 0.85em;
-        margin-top: 5px;
+    .sidebar::-webkit-scrollbar-track,
+    .category-stats::-webkit-scrollbar-track,
+    .recipient-stats::-webkit-scrollbar-track,
+    .recent-emails::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
     }
 
-    /* Custom scrollbar for the sidebar */
-    .sidebar::-webkit-scrollbar {
-        width: 5px;
+    .sidebar::-webkit-scrollbar-thumb,
+    .category-stats::-webkit-scrollbar-thumb,
+    .recipient-stats::-webkit-scrollbar-thumb,
+    .recent-emails::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
     }
 
-    .sidebar::-webkit-scrollbar-track {
-        background: #f1f1f1;
+    .sidebar::-webkit-scrollbar-thumb:hover,
+    .category-stats::-webkit-scrollbar-thumb:hover,
+    .recipient-stats::-webkit-scrollbar-thumb:hover,
+    .recent-emails::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
     }
 
-    .sidebar::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 5px;
-    }
-
-    .sidebar::-webkit-scrollbar-thumb:hover {
-        background: #555;
+    @media (max-width: 991.98px) {
+        .sidebar {
+            position: static;
+            width: 100%;
+            margin-top: 20px;
+            max-height: none;
+        }
     }
 </style>
 {% endif %}

@@ -3,137 +3,63 @@
 {% block title %}Inbox - AI Email Client{% endblock %}
 
 {% block content %}
-<style>
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes animatedBackground {
-        0% {
-            background-position: 0% 50%;
-        }
-
-        50% {
-            background-position: 100% 50%;
-        }
-
-        100% {
-            background-position: 0% 50%;
-        }
-    }
-
-    body {
-        background: linear-gradient(45deg, #ad0d0d, #4a148c, #1e3c72, #2868a3, #9f9346, #5e3a34);
-        background-size: 400% 400%;
-        animation: animatedBackground 20s ease infinite;
-        min-height: 100vh;
-    }
-
-    .table-hover tbody tr:hover {
-        background-color: #f8f9fa !important;
-        transition: background 0.3s;
-    }
-
-    .btn-animated {
-        transition: transform 0.2s;
-    }
-
-    .btn-animated:hover {
-        transform: scale(1.1);
-    }
-
-    #searchInput {
-        width: 100%;
-        max-width: 400px;
-        border-radius: 8px;
-        padding: 8px;
-        border: 1px solid #ccc;
-    }
-
-    .flash-message {
-        position: absolute;
-        top: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(210, 238, 214, 0.7);
-        color: rgb(2, 163, 51);
-        padding: 10px 20px;
-        border-radius: 8px;
-        animation: fadeIn 0.5s ease-in-out;
-    }
-
-    /* Transparent Card Styling */
-    .card {
-        background: rgba(255, 255, 255, 0.1);
-        /* Light transparency */
-        backdrop-filter: blur(12px);
-        /* Frosted glass effect */
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        color: white;
-        /* Ensure text is readable */
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .card:hover {
-        transform: scale(1.02);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .card-title,
-    .card-text {
-        color: rgba(255, 255, 255, 0.9);
-        /* Slightly brighter text */
-    }
-</style>
-
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<div class="flash-message">{{ messages[0] }}</div>
-{% endif %}
-{% endwith %}
-
 <div class="row">
     <div class="col-md-9">
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="inbox-title">Inbox</h2>
-                <div class="d-flex align-items-center">
-                    <div class="btn-group mr-3">
+                <h2 class="text-dark mb-0">Inbox</h2>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="btn-group">
                         <a href="{{ url_for('inbox') }}"
-                            class="btn btn-outline-light {% if not selected_category %}active{% endif %}">All</a>
+                            class="btn btn-outline-primary {% if not selected_category %}active{% endif %}">
+                            <i class="fas fa-inbox me-1"></i>All
+                        </a>
                         <a href="{{ url_for('inbox_category', category='General') }}"
-                            class="btn btn-outline-light {% if selected_category == 'General' %}active{% endif %}">General</a>
+                            class="btn btn-outline-primary {% if selected_category == 'General' %}active{% endif %}">
+                            <i class="fas fa-folder me-1"></i>General
+                        </a>
                         <a href="{{ url_for('inbox_category', category='Work') }}"
-                            class="btn btn-outline-light {% if selected_category == 'Work' %}active{% endif %}">Work</a>
+                            class="btn btn-outline-primary {% if selected_category == 'Work' %}active{% endif %}">
+                            <i class="fas fa-briefcase me-1"></i>Work
+                        </a>
                         <a href="{{ url_for('inbox_category', category='Personal') }}"
-                            class="btn btn-outline-light {% if selected_category == 'Personal' %}active{% endif %}">Personal</a>
+                            class="btn btn-outline-primary {% if selected_category == 'Personal' %}active{% endif %}">
+                            <i class="fas fa-user me-1"></i>Personal
+                        </a>
                         <a href="{{ url_for('inbox_category', category='Important') }}"
-                            class="btn btn-outline-light {% if selected_category == 'Important' %}active{% endif %}">Important</a>
+                            class="btn btn-outline-primary {% if selected_category == 'Important' %}active{% endif %}">
+                            <i class="fas fa-star me-1"></i>Important
+                        </a>
                     </div>
-                    <input type="text" id="searchInput" class="form-control" placeholder="Search emails...">
+                    <div class="input-group" style="max-width: 300px;">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control border-start-0"
+                            placeholder="Search emails...">
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="container mt-4">
             {% for email in emails %}
-            <div class="card mb-3">
+            <div class="card card-glass mb-3 fade-in">
                 <div class="card-body">
-                    <h5 class="card-title">{{ email.subject }}</h5>
-                    <p class="card-text"><strong>From:</strong> {{ email.sender }}</p>
-                    <p class="card-text"><strong>Date:</strong> {{ email.date.strftime('%d %b %Y, %H:%M') }}</p>
-                    <a href="{{ url_for('view_email', email_id=email.id) }}" class="btn btn-outline-primary">View</a>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title mb-1">{{ email.subject }}</h5>
+                            <p class="card-text text-muted mb-1">
+                                <i class="fas fa-user me-1"></i>{{ email.sender }}
+                            </p>
+                            <p class="card-text text-muted mb-0">
+                                <i class="fas fa-clock me-1"></i>{{ email.date.strftime('%d %b %Y, %H:%M') }}
+                            </p>
+                        </div>
+                        <a href="{{ url_for('view_email', email_id=email.id) }}" class="btn btn-primary">
+                            <i class="fas fa-eye me-1"></i>View
+                        </a>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -144,31 +70,19 @@
     </div>
 </div>
 
-<style>
-    /* Make "Inbox" text white */
-    .inbox-title {
-        color: white !important;
-    }
-</style>
-
 <script>
     document.getElementById("searchInput").addEventListener("keyup", function () {
         let filter = this.value.toLowerCase();
-        let rows = document.querySelectorAll(".card");
-        rows.forEach(row => {
-            let text = row.innerText.toLowerCase();
-            row.style.display = text.includes(filter) ? "" : "none";
+        let cards = document.querySelectorAll(".card");
+        cards.forEach(card => {
+            let text = card.innerText.toLowerCase();
+            card.style.display = text.includes(filter) ? "" : "none";
         });
     });
 
-    setTimeout(() => {
-        let flashMessage = document.querySelector(".flash-message");
-        if (flashMessage) {
-            flashMessage.style.transition = "opacity 0.5s";
-            flashMessage.style.opacity = "0";
-            setTimeout(() => flashMessage.remove(), 500);
-        }
-    }, 3000);
+    // Add fade-in animation to cards
+    document.querySelectorAll('.card').forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+    });
 </script>
-
 {% endblock %}

@@ -4,42 +4,6 @@
 {% block title %}Sent Emails - AI Email Client{% endblock %}
 
 {% block content %}
-<style>
-    body {
-        background: linear-gradient(135deg, #a2f4cb, #0c9aff);
-        animation: fadeIn 1s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
-    }
-
-    .card {
-        background: linear-gradient(135deg, #ffffff, #f1f3f5);
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        animation: slideUp 0.5s ease-in-out;
-    }
-
-    @keyframes slideUp {
-        from {
-            transform: translateY(20px);
-            opacity: 0;
-        }
-
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-</style>
-
 <div class="row">
     <div class="col-md-9">
         <div class="container mt-4">
@@ -59,13 +23,15 @@
                 </div>
             </div>
             {% for email in sent_emails %}
-            <div class="card mb-3 shadow-sm">
+            <div class="card card-glass mb-3 shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-envelope-fill"></i> {{ email.subject }}</h5>
-                    <p class="card-text"><strong>To:</strong> {{ email.recipient }}</p>
-                    <p class="card-text"><strong>Date:</strong> {{ email.date.strftime('%d %b %Y, %H:%M') }}</p>
+                    <h5 class="card-title text-dark"><i class="fas fa-envelope me-2"></i> {{ email.subject }}</h5>
+                    <p class="card-text mb-1"><strong>To:</strong> <span class="text-dark">{{ email.recipient }}</span>
+                    </p>
+                    <p class="card-text mb-2"><strong>Date:</strong> <span class="text-dark">{{ email.date.strftime('%d
+                            %b %Y, %H:%M') }}</span></p>
                     <a href="{{ url_for('view_email', email_id=email.id) }}" class="btn btn-outline-primary"><i
-                            class="bi bi-eye-fill"></i> View</a>
+                            class="fas fa-eye me-1"></i> View</a>
                 </div>
             </div>
             {% else %}
