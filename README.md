@@ -60,8 +60,8 @@ AI Email Client is a modern web application that combines traditional email func
    pip install -r requirements.txt
    ```
 
-4. Initialize the database:
-   ```bash
+4. Initialize the database (Windows Command Prompt):
+   ```cmd
    set FLASK_APP=run.py
    flask db init
    flask db migrate
